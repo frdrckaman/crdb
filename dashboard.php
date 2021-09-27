@@ -7,6 +7,9 @@ $random = new Random();
 
 $successMessage=null;$pageError=null;$errorMessage=null;$noE=0;$noC=0;$noD=0;
 $users = $override->getData('user');
+$activeSub=$override->countData('subscribers','status',1,'agent_id',$user->data()->id);
+$activeSub1=$override->countData('subscribers','status',2,'agent_id',$user->data()->id);
+$activeSub2=$override->countData('subscribers','status',0,'agent_id',$user->data()->id);
 if($user->isLoggedIn()) {
     if(Input::exists('post')){
 
@@ -19,7 +22,7 @@ if($user->isLoggedIn()) {
 <html lang="en">
 
 <head>
-    <title> Dashboard | WHYNOT INN </title>
+    <title> Dashboard | COMPANY </title>
     <?php include "head.php";?>
 </head>
 <body>
@@ -44,25 +47,49 @@ if($user->isLoggedIn()) {
 
             <div class="row">
 
-                <div class="col-md-4">
+                <?php if($user->data()->accessLevel == 1){?>
+                    <div class="col-md-3">
 
-                    <div class="wBlock red clearfix">
+                        <div class="wBlock blue clearfix">
+                            <div class="dSpace">
+                                <h3>Agents</h3>
+                                <span class="mChartBar" sparkType="bar" sparkBarColor="white"><!--130,190,260,230,290,400,340,360,390--></span>
+                                <span class="number"><?=$override->getCount('user','acc_type',2)?></span>
+                            </div>
+                        </div>
+
+                    </div>
+                <?php }?>
+
+                <div class="col-md-3">
+
+                    <div class="wBlock green clearfix">
                         <div class="dSpace">
-                            <h3>Agents</h3>
-                            <span class="mChartBar" sparkType="bar" sparkBarColor="white"><!--130,190,260,230,290,400,340,360,390--></span>
-                            <span class="number"><?=$override->getCount('user','acc_type',2)?></span>
+                            <h3>Approve Subscribers</h3>
+                            <span class="mChartBar" sparkType="bar" sparkBarColor="white"><!--5,10,15,20,23,21,25,20,15,10,25,20,10--></span>
+                            <span class="number"><?php if($user->data()->accessLevel != 1){echo $activeSub;}else{echo $override->getCount('subscribers','status',1);}?></span>
                         </div>
                     </div>
 
                 </div>
+                <div class="col-md-3">
 
-                <div class="col-md-4">
-
-                    <div class="wBlock green clearfix">
+                    <div class="wBlock yellow clearfix">
                         <div class="dSpace">
-                            <h3>Subscribers</h3>
+                            <h3>Subscribers Pending for Approval</h3>
                             <span class="mChartBar" sparkType="bar" sparkBarColor="white"><!--5,10,15,20,23,21,25,20,15,10,25,20,10--></span>
-                            <span class="number"><?=$override->getCount('subscribers','status',1)?></span>
+                            <span class="number"><?php if($user->data()->accessLevel != 1){echo $activeSub2;}else{echo $override->getCount('subscribers','status',0);}?></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+
+                    <div class="wBlock red clearfix">
+                        <div class="dSpace">
+                            <h3>Rejected Subscribers</h3>
+                            <span class="mChartBar" sparkType="bar" sparkBarColor="white"><!--5,10,15,20,23,21,25,20,15,10,25,20,10--></span>
+                            <span class="number"><?php if($user->data()->accessLevel != 1){echo $activeSub1;}else{echo $override->getCount('subscribers','status',2);}?></span>
                         </div>
                     </div>
 

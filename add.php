@@ -112,7 +112,7 @@ if($user->isLoggedIn()) {
                         'agent_id'=>$user->data()->id,
                     ));
                     $em= $override->lastRow('subscribers','id')[0];
-                    $email->sendEmail('frdrckdeveloper@gmail.com',$em['name'],'Submitted for Approval');
+                    $email->sendEmail('Aloyce.Mwitwa@crdbbank.co.tz',$em['name'],'Submitted for Approval');
                     $successMessage = 'Account Created Successful';
 
                 } catch (Exception $e) {
